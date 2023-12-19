@@ -17,6 +17,7 @@
 		DB47895E2B2F8A9900208BDD /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB47895D2B2F8A9900208BDD /* LoginVC.swift */; };
 		DB4789622B2F99B700208BDD /* CreateAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4789612B2F99B700208BDD /* CreateAccountVC.swift */; };
 		DB4789642B2F9FE300208BDD /* ExploreTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4789632B2F9FE300208BDD /* ExploreTVC.swift */; };
+		DB47898B2B32346600208BDD /* CustomCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB47898A2B32346600208BDD /* CustomCardCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		DB47895D2B2F8A9900208BDD /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		DB4789612B2F99B700208BDD /* CreateAccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountVC.swift; sourceTree = "<group>"; };
 		DB4789632B2F9FE300208BDD /* ExploreTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreTVC.swift; sourceTree = "<group>"; };
+		DB47898A2B32346600208BDD /* CustomCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCardCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				DB47895D2B2F8A9900208BDD /* LoginVC.swift */,
 				DB4789482B2F82ED00208BDD /* Main.storyboard */,
 				DB4789632B2F9FE300208BDD /* ExploreTVC.swift */,
+				DB47898A2B32346600208BDD /* CustomCardCell.swift */,
 				DB4789612B2F99B700208BDD /* CreateAccountVC.swift */,
 				DB47894E2B2F82EF00208BDD /* Assets.xcassets */,
 				DB4789502B2F82EF00208BDD /* LaunchScreen.storyboard */,
@@ -154,6 +157,7 @@
 				DB47894D2B2F82ED00208BDD /* CardSwap.xcdatamodeld in Sources */,
 				DB4789622B2F99B700208BDD /* CreateAccountVC.swift in Sources */,
 				DB47895C2B2F87F600208BDD /* InboxTVC.swift in Sources */,
+				DB47898B2B32346600208BDD /* CustomCardCell.swift in Sources */,
 				DB4789452B2F82ED00208BDD /* SceneDelegate.swift in Sources */,
 				DB47895E2B2F8A9900208BDD /* LoginVC.swift in Sources */,
 				DB4789642B2F9FE300208BDD /* ExploreTVC.swift in Sources */,

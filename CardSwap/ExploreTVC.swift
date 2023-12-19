@@ -6,22 +6,51 @@
 //
 
 import UIKit
+//TODO: finish setting up image on cell 
 
 class ExploreTVC: UITableViewController {
     
+    //var data = MagicCard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         let url = "https://api.scryfall.com/cards/56ebc372-aabd-4174-a943-c7bf59e5028d"
-        print("before get data")
-        getData(from: url)
-
+        getData(from: url) { sampleCard in
+//            self.data = sampleCard
+        }
     }
     
-    func getData(from url: String) {
-        let getCardTask = URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: { data, response, error in
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // Return the number of cells you want in your table view
+        return 1
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Dequeue or create a new instance of your custom cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SampleCardCell", for: indexPath) as! CustomCardCell
+
+        // Configure the cell with your data
+        
+        
+        var sampleCard: MagicCard
+//        getData(from: url) { sampleCard in
+//            if let card = sampleCard {
+//                //cell.textLabel?.text = "\(sampleCard!.name)"
+//                cell.cardNameLabel.text = "\(sampleCard!.name)"
+//            } else {
+//                cell.textLabel?.text = "Fuck you"
+//            }
+//        }
+        
+        //cell.imageView.
+        return cell
+    }
+    
+    func getData(from url: String, completion: @escaping (MagicCard?) -> Void) {
+        URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: { data, response, error in
             guard let data = data, error == nil else {
                 print("something went wrong you fucking idiot")
+                completion(nil)
                 return
             }
             
@@ -32,14 +61,8 @@ class ExploreTVC: UITableViewController {
                 print("failed to convert: \(error.localizedDescription)")
             }
 
-            guard let json = result else {
-                return
-            }
-            
-            print(json.name)
-        })
-            
-        getCardTask.resume()
+            completion(result)
+        }).resume()
     }
     
     struct MagicCard: Codable {
