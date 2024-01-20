@@ -6,23 +6,40 @@
 //
 
 import UIKit
-//TODO: finish setting up image on cell 
 
 class ExploreTVC: UITableViewController {
     
-    //var data = MagicCard
+    var data = [MagicCard]()
     
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        let url = "https://api.scryfall.com/cards/search?q=c%3Awhite+mv%3D1"
+//        getData(from: url) { result in
+//            self.data = result.data
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//            }
+//        }
+//    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        let url = "https://api.scryfall.com/cards/56ebc372-aabd-4174-a943-c7bf59e5028d"
-        getData(from: url) { sampleCard in
-//            self.data = sampleCard
+        let url = "https://api.scryfall.com/cards/search?q=c%3Awhite+mv%3D1"
+        getData(from: url) { result in
+            guard let cardList = result else {
+                print("Data is missing or couldn't be read.")
+                return
+            }
+
+            self.data = cardList.data
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of cells you want in your table view
-        return 1
+        return data.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -30,42 +47,67 @@ class ExploreTVC: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SampleCardCell", for: indexPath) as! CustomCardCell
 
         // Configure the cell with your data
-        
-        
-        var sampleCard: MagicCard
-//        getData(from: url) { sampleCard in
-//            if let card = sampleCard {
-//                //cell.textLabel?.text = "\(sampleCard!.name)"
-//                cell.cardNameLabel.text = "\(sampleCard!.name)"
-//            } else {
-//                cell.textLabel?.text = "Fuck you"
-//            }
-//        }
-        
-        //cell.imageView.
+        cell.cardNameLabel.text = data[indexPath.row].name
         return cell
     }
     
-    func getData(from url: String, completion: @escaping (MagicCard?) -> Void) {
-        URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: { data, response, error in
-            guard let data = data, error == nil else {
-                print("something went wrong you fucking idiot")
+    //func getData(from url: String, completion: @escaping (CardList) -> Void) {
+        
+//        let url = URL(string: url)
+//        let session = URLSession.shared
+//        let dataTask = session.dataTask(with: url!) { data, response, error in
+//            do {
+//                let parsingData = try JSONDecoder().decode(CardList.self, from: data!)
+//                completion(parsingData)
+//            } catch {
+//                print("\(error.localizedDescription)")
+//            }
+//        }
+//        dataTask.resume()
+        
+    func getData(from url: String, completion: @escaping (CardList?) -> Void) {
+        guard let url = URL(string: url) else {
+            print("Invalid URL")
+            completion(nil)
+            return
+        }
+        
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: url) { data, response, error in
+            guard error == nil else {
+                print("Error: \(error!.localizedDescription)")
                 completion(nil)
                 return
             }
             
-            var result: MagicCard?
-            do {
-                result = try JSONDecoder().decode(MagicCard.self, from: data)
-            } catch {
-                print("failed to convert: \(error.localizedDescription)")
+            guard let data = data else {
+                print("Data is nil")
+                completion(nil)
+                return
             }
-
-            completion(result)
-        }).resume()
+            
+            do {
+                let parsingData = try JSONDecoder().decode(CardList.self, from: data)
+                completion(parsingData)
+            } catch {
+                print("Parsing error: \(error.localizedDescription)")
+                completion(nil)
+            }
+        }
+        
+        dataTask.resume()
     }
     
-    struct MagicCard: Codable {
+    
+    struct CardList: Decodable {
+        let object: String
+        let total_cards: Int
+        let has_more: Bool
+        let next_page: String
+        let data: [MagicCard]
+    }
+    
+    struct MagicCard: Decodable {
         let object: String
         let id: String
         let oracle_id: String
@@ -131,7 +173,7 @@ class ExploreTVC: UITableViewController {
         let purchase_uris: PurchaseURIs
     }
 
-    struct ImageURIs: Codable {
+    struct ImageURIs: Decodable {
         let small: String
         let normal: String
         let large: String
@@ -140,7 +182,7 @@ class ExploreTVC: UITableViewController {
         let border_crop: String
     }
 
-    struct Legalities: Codable {
+    struct Legalities: Decodable {
         let standard: String
         let future: String
         let historic: String
@@ -165,7 +207,7 @@ class ExploreTVC: UITableViewController {
         let predh: String
     }
 
-    struct Prices: Codable {
+    struct Prices: Decodable {
         let usd: String
         let usd_foil: String
         let usd_etched: String?
@@ -174,14 +216,14 @@ class ExploreTVC: UITableViewController {
         let tix: String
     }
 
-    struct RelatedURIs: Codable {
+    struct RelatedURIs: Decodable {
         let gatherer: String
         let tcgplayer_infinite_articles: String
         let tcgplayer_infinite_decks: String
         let edhrec: String
     }
 
-    struct PurchaseURIs: Codable {
+    struct PurchaseURIs: Decodable {
         let tcgplayer: String
         let cardmarket: String
         let cardhoarder: String
